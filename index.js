@@ -70,6 +70,20 @@ server.put('/:id', async (req, res) => {
   }
 })
 
+server.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleted = await db('zoos').where({ id }).delete()
+    if (deleted) {
+        res.status(200).json({ message: "item successfully deleted" })
+    } else {
+      res.status(400).json({ message: 'item could not be found' })
+    }
+  } catch {
+    res.status(500).json({ message: "error in deleting item" })
+  }
+})
+
 
 const port = 3300;
 server.listen(port, function() {
