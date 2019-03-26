@@ -17,7 +17,7 @@ server.use(express.json());
 server.use(helmet());
 
 // endpoints here
-server.get('/', async (req, res) => {
+server.get('/api/zoos/', async (req, res) => {
   try {
     const zoos = await db('zoos')
     res.status(200).json(zoos)
@@ -26,7 +26,7 @@ server.get('/', async (req, res) => {
   }
 })
 
-server.get('/:id', async (req, res) => {
+server.get('/api/zoos/:id', async (req, res) => {
   const { id } = req.params; 
   try {
     const zoo = await db('zoos').where({ id }).first()
@@ -41,7 +41,7 @@ server.get('/:id', async (req, res) => {
   }
 })
 
-server.post('/', async (req, res) => {
+server.post('/api/zoos/', async (req, res) => {
   try {
     const [id] = await db('zoos').insert(req.body)
 
@@ -55,7 +55,7 @@ server.post('/', async (req, res) => {
   }
 })
 
-server.put('/:id', async (req, res) => {
+server.put('/api/zoos/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const edits = await db('zoos').where({ id }).update(req.body)
@@ -70,7 +70,7 @@ server.put('/:id', async (req, res) => {
   }
 })
 
-server.delete('/:id', async (req, res) => {
+server.delete('/api/zoos/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const deleted = await db('zoos').where({ id }).delete()
