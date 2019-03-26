@@ -55,6 +55,22 @@ server.post('/', async (req, res) => {
   }
 })
 
+server.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const edits = await db('zoos').where({ id }).update(req.body)
+    if (edits) {
+      const updated = await db('zoos').where({ id }).first()
+      res.status(200).json(updated)
+    } else {
+      res.status(400).json({ message: 'item could not be found' })
+    }
+  } catch {
+    res.status(500).json({ message: "error in updating item" })
+  }
+})
+
+
 const port = 3300;
 server.listen(port, function() {
   console.log(`\n=== Web API Listening on http://localhost:${port} ===\n`);
