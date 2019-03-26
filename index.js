@@ -26,6 +26,21 @@ server.get('/', async (req, res) => {
   }
 })
 
+server.get('/:id', async (req, res) => {
+  const { id } = req.params; 
+  try {
+    const zoo = await db('zoos').where({ id }).first()
+    if (zoo) {
+      res.status(200).json(zoo)
+    }
+    else {
+      res.status(404).json({ message: "That zoo does not exist in the database" })
+    }
+  } catch {
+    res.status(500).json({ message: "error in retrieving zoos" })
+  }
+})
+
 server.post('/', async (req, res) => {
   try {
     const [id] = await db('zoos').insert(req.body)
