@@ -19,12 +19,25 @@ server.use(helmet());
 // endpoints here
 server.get('/', async (req, res) => {
   try {
-    const dbres = await db('zoos')
-    res.status(200).json(dbres)
+    const zoos = await db('zoos')
+    res.status(200).json(zoos)
   } catch {
     res.status(500).json({ message: "error in retrieving items" })
   }
-  
+})
+
+server.post('/', async (req, res) => {
+  try {
+    const [id] = await db('zoos').insert(req.body)
+
+    const zoo = await db('zoos')
+      .where({ id })
+      .first()
+
+      res.status(200).json(zoo)
+  } catch {
+    res.status(500).json({ error: "error in adding to database" })
+  }
 })
 
 const port = 3300;
